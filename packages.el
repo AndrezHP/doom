@@ -52,3 +52,5 @@
 (package! evil-tutor)
 (package! org-bullets)
 (package! org-modern)
+(package! org-fancy-priorities)
+(package! rainbow-mode)

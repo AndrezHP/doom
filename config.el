@@ -79,3 +79,22 @@
 
 ;; Map terminal as in neovim
 (map! :desc "Toggle terminal" :ni "C-/" '+vterm/toggle)
+
+;; This breaks org-mode for some reason
+;; (use-package org-fancy-priorities
+;;   :hook (org-mode . org-fancy-priorities-mode)
+;;   :config
+;;   (setq org-fancy-priorities-list '((?A . "HIGH")
+;;                                     (?B . "MID")
+;;                                     (?C . "LOW"))))
+
+(setq deft-directory "~/org/"
+      deft-extensions '("txt" "org" "md")
+      deft-recursive t)
+
+(setq org-journal-date-prefix "#+TITLE: "
+      org-journal-time-prefix "* "
+      org-journal-date-format "%a, %Y-%m-%d"
+      org-journal-file-format "%Y-%m-%d.org")
+
+(setq org-roam-directoiry "~/org/roam")
