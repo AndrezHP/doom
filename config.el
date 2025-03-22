@@ -98,3 +98,19 @@
       org-journal-file-format "%Y-%m-%d.org")
 
 (setq org-roam-directoiry "~/org/roam")
+
+
+;;; How to start a language server inside a nix shell when a flake is available:
+;; (defun start-hls (_mode)
+;;   "Start HLS by trying to wrap in nix develop."
+;;   (if (file-exists-p "flake.nix")
+;;     (progn
+;;       (message "Running HLS with flake")
+;;       (list "nix" "develop" "--command" "haskell-language-server-wrapper" "--lsp"))
+;;     (progn
+;;       (message "Running HLS from host")
+;;       (list "haskell-language-server-wrapper" "--lsp"))))
+
+;; (add-to-list 'eglot-server-programs '(haskell-mode . start-hls))
+
+;; https://docs.doomemacs.org
