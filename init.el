@@ -21,8 +21,8 @@
        (corfu +orderless)  ; complete with cap(f), cape and a flying feather!
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
-       (ivy +fuzzy)               ; a search engine for love and life
-       (vertico +icons +childframe)           ; the search engine of the future
+       ;; (ivy +fuzzy)               ; a search engine for love and life
+       (vertico +fuzzy +icons +childframe)           ; the search engine of the future
 
        :ui
        deft              ; notational velocity for Emacs
@@ -65,12 +65,12 @@
 
        :checkers
        syntax              ; tasing you for every semicolon you forget
-       spell               ; tasing you for misspelling mispelling
+       ;;(spell +aspell)               ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools
        ;;ansible
-       ;;biblio            ; Writes a PhD for you (citation needed)
+       biblio            ; Writes a PhD for you (citation needed)
        ;;collab            ; buffers with friends
        (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
        ;;direnv
