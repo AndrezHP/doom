@@ -114,3 +114,5 @@
 ;; (add-to-list 'eglot-server-programs '(haskell-mode . start-hls))
 
 ;; https://docs.doomemacs.org
+(setq load-path (append (list (expand-file-name "./lilypond")) load-path))
+(require 'lilypond-mode)
