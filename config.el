@@ -28,12 +28,9 @@
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type "relative")
-
 (setq doom-theme 'doom-tomorrow-night)
-(setq doom-font (font-spec :family "Fira Code" :size 15)) ;; Nerd Font preferred
-(setq display-line-numbers-type 'relative)
-(setq doom-variable-pitch-font (font-spec :family "Fira Code" :size 15))
-
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)) ;; Nerd Font preferred
+(setq doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 15))
 (setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -181,24 +178,23 @@
       :desc "devdocs-install" "d i" #'devdocs-install
       :desc "devdocs-delete" "d d" #'devdocs-delete)
 
-;; Custom popup rules
-(after! popup
-  (set-popup-rules!
-    '(("^\\*devdocs\\*"
-       :side right
-       :size 0.5
-       :quit t
-       :select t)
-      ("^\\*eww"
-       :side right
-       :size 0.5
-       :quit t
-       :select t)
-      ("^\\*helpful.*\\*$"
-       :side right
-       :size 0.4
-       :quit t
-       :select t))))
+;;;; Custom popup rules
+(set-popup-rules!
+  '(("^\\*devdocs\\*"
+     :side right
+     :size 0.5
+     :quit t
+     :select t)
+    ("^\\*eww"
+     :side right
+     :size 0.5
+     :quit t
+     :select t)
+    ("^\\*helpful.*\\*$"
+     :side right
+     :size 0.4
+     :quit t
+     :select t)))
 
 (setq load-path (append (list (expand-file-name "./lilypond")) load-path))
 (require 'lilypond-mode)
