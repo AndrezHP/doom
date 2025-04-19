@@ -78,15 +78,6 @@
       org-journal-date-format "%a, %Y-%m-%d"
       org-journal-file-format "%Y-%m-%d.org")
 (setq org-roam-directoiry "~/org/roam")
-(setq org-agenda-files
-      '("/home/andreas/org/todo.org"
-        "/home/andreas/org/agenda.org"
-        "/home/andreas/org/journal.org"
-        "/home/andreas/org/notes.org"))
-(setq org-agenda-contributing-files '
-      '("/home/andreas/org/todo.org"
-        "/home/andreas/org/agenda.org"
-        "/home/andreas/org/journal.org"))
 
 (after! org
   (use-package org-fancy-priorities

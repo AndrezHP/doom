@@ -56,3 +56,4 @@
 (package! rainbow-mode)
 (package! devdocs) ;; Browsing documentation at devdocs offline
 ;; (package! alda-mode)
+(package! nov)

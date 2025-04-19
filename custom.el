@@ -6,7 +6,7 @@
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
    '("/home/andreas/org/agenda.org" "/home/andreas/org/journal.org"
-     "/home/andreas/org/notes.org")))
+     "/home/andreas/org/notes.org" "/home/andreas/org/todo.org")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
