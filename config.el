@@ -157,17 +157,20 @@
 (map! :leader :n
       :desc "Build home with Nix Home-Manager" "<f12>" #'ahp/build-home)
 
-;;;; Swap avy keybindings
+;;;; Swap avy keybindings and override dirvish keybinding
 (map! :after evil
       :map evil-normal-state-map
       :desc "avy-goto-char-2" "g s /" #'avy-goto-char-2
-      :desc "avy-goto-char-timer" "g s s" #'avy-goto-char-timer)
+      :desc "avy-goto-char-timer" "g s s" #'avy-goto-char-timer
+      :leader :n :desc "+treemacs/toggle" "o p" #'+treemacs/toggle)
 
-;; devdocs config
+;; devdocs keybindings
 (map! :leader :n
       :desc "devdocs-lookup" "d l" #'devdocs-lookup
       :desc "devdocs-install" "d i" #'devdocs-install
       :desc "devdocs-delete" "d d" #'devdocs-delete)
+
+(map! :desc "other window" "M-o" #'other-window)
 
 ;;;; Custom popup rules
 (set-popup-rules!
@@ -187,5 +190,9 @@
      :quit t
      :select t)))
 
-(setq load-path (append (list (expand-file-name "./lilypond")) load-path))
-(require 'lilypond-mode)
+;; (setq load-path (append (list (expand-file-name "./lilypond")) load-path))
+;; (require 'lilypond-mode)
+
+;; nov.el
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+
