@@ -113,6 +113,7 @@
         +roam2
         +pomodoro
         +publish           ; Emacs+orgh as a static site generator
+        +hugo
         +present)
        (python
         +conda
@@ -143,6 +144,7 @@
        calendar
        emms
        irc               ; how neckbeards socialize
+       (rss +youtube)
        ;;everywhere        ; *leave* Emacs!? You must be joking NOTE This requires xorg
 
        :config

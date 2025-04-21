@@ -1,4 +1,5 @@
-;;; lilypond-init.el --- Startup code for LilyPond mode
+;;; lilypond-init.el --- Startup code for LilyPond mode  -*- lexical-binding: t;
+;;; -*-
 ;;
 ;; Instructions, extracted from Documentation/topdocs/INSTALL.texi: 
 
@@ -12,7 +13,7 @@
 ;; As a user, you may want add your source path or, e.g., `~/site-lisp/' to
 ;; your `load-path'. Append the following line (modified) to your `~/.emacs':
 
-;(setq load-path (append (list (expand-file-name "~/site-lisp")) load-path))
+                                        ;(setq load-path (append (list (expand-file-name "~/site-lisp")) load-path))
 
 (autoload 'LilyPond-mode "lilypond-mode" "LilyPond Editing Mode" t)
 (add-to-list 'auto-mode-alist '("\\.ly\\'" . LilyPond-mode))

@@ -1,4 +1,4 @@
-;;; lilypond-indent.el --- Auto-indentation for lilypond code
+;;; lilypond-indent.el --- Auto-indentation for lilypond code  -*- lexical-binding: t; -*-
 ;;;;
 ;;;; This file is part of LilyPond, the GNU music typesetter.
 ;;;;
@@ -510,12 +510,12 @@ builtin 'blink-matching-open' is not used. In syntax table, see
     (setq bracket-type (char-after (point)))
     (setq char-before-bracket-type nil)
     (if (memq bracket-type '(?\] ?\) ?\[ ?\())
-      (progn 
-	(setq np -1)
-	(while (eq (char-before (- (point) (setq np (+ np 1)))) ?\\)
-	  (setq char-before-bracket-type (if char-before-bracket-type nil ?\\)))
-        (if (eq char-before-bracket-type ?\\)
-	    (setq bracket-type (string char-before-bracket-type bracket-type)))))
+        (progn
+	  (setq np -1)
+	  (while (eq (char-before (- (point) (setq np (+ np 1)))) ?\\)
+	    (setq char-before-bracket-type (if char-before-bracket-type nil ?\\)))
+          (if (eq char-before-bracket-type ?\\)
+	      (setq bracket-type (string char-before-bracket-type bracket-type)))))
     (when blink-matching-paren-distance
       (narrow-to-region
        (max (point-min) (- (point) blink-matching-paren-distance))

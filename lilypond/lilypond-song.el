@@ -1,4 +1,4 @@
-;;;; lilypond-song.el --- Emacs support for LilyPond singing
+;;;; lilypond-song.el --- Emacs support for LilyPond singing  -*- lexical-binding: t; -*-
 ;;;;
 ;;;; This file is part of LilyPond, the GNU music typesetter.
 ;;;;
@@ -121,7 +121,7 @@ avoid ecasound resampling problems."
                 lilysong-voices)
           (forward-line))
         lilysong-voices)))
-  
+
 (defun lilysong-change-language ()
   "Change synthesis language or voice of the current document."
   (interactive)
@@ -153,7 +153,7 @@ avoid ecasound resampling problems."
               (while (re-search-forward "^[^%\n]*\\\\include +\"\\([^\"]+\\)\"" nil t)
                 (push (match-string 1) stack)))))))
     (nreverse resulting-files)))
-     
+
 (defvar lilysong-festival-command-regexp
   "^[^%\n]*\\\\festival\\(syl\\)? +#\"\\([^\"]+\\)\"")
 
@@ -292,12 +292,12 @@ only."
   (lilysong-file->wav filename "ewf"))
 
 (defstruct lilysong-compilation-data
-  command
-  makefile
-  buffer
-  songs
-  midi
-  in-parallel)
+           command
+           makefile
+           buffer
+           songs
+           midi
+           in-parallel)
 (defvar lilysong-compilation-data nil)
 (defun lilysong-sing (songs &optional midi-files in-parallel)
   (setq lilysong-last-command-args (list songs midi-files in-parallel))
@@ -518,12 +518,12 @@ With a double universal prefix argument, sing and play all the parts."
   "Remove generated *.xml and *.wav files used for singing."
   (interactive)
   (flet ((delete-file* (file)
-           (when (file-exists-p file)
-             (delete-file file))))
-    (dolist (xml-file (lilysong-song-list 'all))
-      (delete-file* xml-file)
-      (delete-file* (lilysong-file->wav xml-file)))
-    (mapc 'delete-file* (mapcar 'lilysong-file->wav (lilysong-midi-list 'all)))))
+                       (when (file-exists-p file)
+                         (delete-file file))))
+        (dolist (xml-file (lilysong-song-list 'all))
+          (delete-file* xml-file)
+          (delete-file* (lilysong-file->wav xml-file)))
+        (mapc 'delete-file* (mapcar 'lilysong-file->wav (lilysong-midi-list 'all)))))
 
 (define-key LilyPond-mode-map "\C-c\C-a" 'LilyPond-command-sing)
 (define-key LilyPond-mode-map "\C-c\C-q" 'LilyPond-command-sing-and-play)
@@ -531,21 +531,21 @@ With a double universal prefix argument, sing and play all the parts."
 (define-key LilyPond-mode-map "\C-c\C-z" 'LilyPond-command-sing-last)
 
 (easy-menu-add-item LilyPond-command-menu nil
-  ["Sing Current" LilyPond-command-sing t])
+                    ["Sing Current" LilyPond-command-sing t])
 (easy-menu-add-item LilyPond-command-menu nil
-  ["Sing Selected" (LilyPond-command-sing '(4)) t])
+                    ["Sing Selected" (LilyPond-command-sing '(4)) t])
 (easy-menu-add-item LilyPond-command-menu nil
-  ["Sing All" (LilyPond-command-sing '(16)) t])
+                    ["Sing All" (LilyPond-command-sing '(16)) t])
 (easy-menu-add-item LilyPond-command-menu nil
-  ["Sing Selected Sequentially" (LilyPond-command-sing 1) t])
+                    ["Sing Selected Sequentially" (LilyPond-command-sing 1) t])
 (easy-menu-add-item LilyPond-command-menu nil
-  ["Sing and Play Current" LilyPond-command-sing-and-play t])
+                    ["Sing and Play Current" LilyPond-command-sing-and-play t])
 (easy-menu-add-item LilyPond-command-menu nil
-  ["Sing and Play Selected" (LilyPond-command-sing-and-play '(4)) t])
+                    ["Sing and Play Selected" (LilyPond-command-sing-and-play '(4)) t])
 (easy-menu-add-item LilyPond-command-menu nil
-  ["Sing and Play All" (LilyPond-command-sing-and-play '(16)) t])
+                    ["Sing and Play All" (LilyPond-command-sing-and-play '(16)) t])
 (easy-menu-add-item LilyPond-command-menu nil
-  ["Sing Last" LilyPond-command-sing-last t])
+                    ["Sing Last" LilyPond-command-sing-last t])
 
 
 ;;; Announce

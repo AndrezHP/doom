@@ -1,7 +1,6 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
+;; Some functionality uses this to identify you, e.g. GPG configuration, email clients, file templates and snippets. It is optional.
 ;; (setq user-full-name "John Doe"
 ;;       user-mail-address "john@doe.com")
 
@@ -190,8 +189,8 @@
      :quit t
      :select t)))
 
-;; (setq load-path (append (list (expand-file-name "./lilypond")) load-path))
-;; (require 'lilypond-mode)
+(setq load-path (append (list (expand-file-name "./lilypond")) load-path))
+(require 'lilypond-mode)
 
 ;; nov.el
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))

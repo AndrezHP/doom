@@ -1,4 +1,4 @@
-;;;; lilypond-mode.el -- Major mode for editing GNU LilyPond music scores
+;;;; lilypond-mode.el -- Major mode for editing GNU LilyPond music scores  -*- lexical-binding: t; -*-
 ;;;; This file is part of LilyPond, the GNU music typesetter.
 ;;;;
 ;;;; Copyright (C) 1999--2022 Jan Nieuwenhuizen <janneke@gnu.org>
@@ -96,7 +96,7 @@ Finds file lilypond-words.el from load-path."
       (setq size (buffer-size))
       (set-buffer current-buffer)
       size
-    )))
+      )))
 
 ;; creates dictionary if empty
 (if (and (eq (length (LilyPond-add-dictionary-word ())) 1)
@@ -215,7 +215,7 @@ in LilyPond-include-path."
   (let ((found nil)
 	(regexp (concat "\\`\\("
 			(mapconcat (function (lambda (dir)
-				      (regexp-quote (expand-file-name dir))))
+				               (regexp-quote (expand-file-name dir))))
 				   LilyPond-include-path "\\|")
 			"\\).*\\("
 			(mapconcat 'regexp-quote originals "\\|")
@@ -462,8 +462,8 @@ LilyPond-expand-list.
   :type '(repeat (cons :tag "Command Item"
 		       (string :tag "Key")
 		       (cons :tag "How"
-			(string :tag "Command")
-			(string :tag "Next Key")))))
+			     (string :tag "Command")
+			     (string :tag "Next Key")))))
 
 ;; drop this?
 (defcustom LilyPond-file-extension ".ly"
@@ -487,8 +487,8 @@ LilyPond-expand-list.
   "Alist of expansion strings for LilyPond command names."
   :group 'LilyPond
   :type '(repeat (cons :tag "Alist item"
-		  (string :tag "Symbol")
-		  (string :tag "Expansion"))))
+		       (string :tag "Symbol")
+		       (string :tag "Expansion"))))
 
 
 (defcustom LilyPond-command-Show "View"
@@ -496,7 +496,7 @@ LilyPond-expand-list.
 Must be the car of an entry in `LilyPond-command-alist'."
   :group 'LilyPond
   :type 'string)
-  (make-variable-buffer-local 'LilyPond-command-Show)
+(make-variable-buffer-local 'LilyPond-command-Show)
 
 (defcustom LilyPond-command-Print "Print"
   "The name of the Print entry in LilyPond-command-Print."
@@ -507,12 +507,12 @@ Must be the car of an entry in `LilyPond-command-alist'."
   "Find the first command in the chain that is needed to run
  (input file is newer than the output file)"
   (let* ((entry (cdr (assoc command LilyPond-command-alist)))
-	(next-command (nth 3 entry)))
+	 (next-command (nth 3 entry)))
     (if (null next-command)
 	command
       (let* ((src-string (nth 1 entry))
-	    (input (LilyPond-command-expand src-string file))
-	    (output (LilyPond-command-expand (nth 2 entry) file)))
+	     (input (LilyPond-command-expand src-string file))
+	     (output (LilyPond-command-expand (nth 2 entry) file)))
 	(if (or (file-newer-than-file-p input output)
 		(and (equal "%s" src-string)
 		     (not (equal (buffer-name) file))
@@ -559,13 +559,13 @@ Must be the car of an entry in `LilyPond-command-alist'."
   "Run lilypond for the current document."
   (interactive)
   (LilyPond-command (LilyPond-command-menu "LilyPond") 'LilyPond-get-master-file)
-)
+  )
 
 (defun LilyPond-command-formatps ()
   "Format the ps output of the current document."
   (interactive)
   (LilyPond-command (LilyPond-command-menu "2PS") 'LilyPond-get-master-file)
-)
+  )
 
 (defun LilyPond-command-formatmidi ()
   "Format the midi output of the current document."
@@ -678,10 +678,10 @@ command."
 		(if (not (getenv "XEDITOR"))
 		    (setenv "XEDITOR" "emacsclient --no-wait +%l:%c %f"))
 		(if LilyPond-kick-xdvi
-		  (let ((process-xdvi (get-buffer-process buffer-xdvi)))
-		    (if process-xdvi
-			(signal-process (process-id process-xdvi) 'SIGUSR1)
-		      (LilyPond-shell-process name buffer-xdvi command)))
+		    (let ((process-xdvi (get-buffer-process buffer-xdvi)))
+		      (if process-xdvi
+			  (signal-process (process-id process-xdvi) 'SIGUSR1)
+		        (LilyPond-shell-process name buffer-xdvi command)))
 		  (LilyPond-shell-process name buffer-xdvi command)))
 	    (progn
 	      (if (string-equal name "Midi")
@@ -849,12 +849,12 @@ command."
 	      (delete-region (point) (+ (point) (length post)))
 	      (font-lock-fontify-buffer))) ; only inserting fontifies
 
-	(setq complist (all-completions pre (LilyPond-add-dictionary-word ())))
-	(while (> (length complist) 0)
-	  (setq compsstr (concat compsstr "\"" (car complist) "\" "))
-	  (setq complist (cdr complist)))
-	(message compsstr)
-	(sit-for 0 100)))))
+	  (setq complist (all-completions pre (LilyPond-add-dictionary-word ())))
+	  (while (> (length complist) 0)
+	    (setq compsstr (concat compsstr "\"" (car complist) "\" "))
+	    (setq complist (cdr complist)))
+	  (message compsstr)
+	  (sit-for 0 100)))))
 
 (defun LilyPond-info ()
   "Launch Info for lilypond."
@@ -901,49 +901,49 @@ command."
         (m (set-marker (make-marker) 1 (get-buffer b)))
         (distance (if (LilyPond-mark-active)
 		      (abs (- (mark-marker) (point-marker))) 0))
-       )
-   ;; find the place first
-   (if (LilyPond-mark-active)
-       (goto-char (min (mark-marker) (point-marker))))
-   (while (and (not found) (> (get-buffer-size b) (marker-position m)))
-    (setq copy (car (copy-alist (list (eval (symbol-name (read m)))))))
-    (if (string-equal word copy) (setq found t)))
-   (if found (insert word))
-   (if (> (get-buffer-size b) (marker-position m))
-       (setq copy (car (copy-alist (list (eval (symbol-name (read m))))))))
-   (if (not (string-equal "-" copy))
-       (setq found nil))
-   (while (and found (> (get-buffer-size b) (marker-position m)))
-    ;; find next symbol
-    (setq copy (car (copy-alist (list (eval (symbol-name (read m)))))))
-    ;; check whether it is the word, or the word has been found
-    (cond
-     ((string-equal "-" copy) (setq found nil))
-     ((string-equal "%" copy) (insert " " (read-string "Give Arguments: ")))
-     ((string-equal "_" copy)
-      (progn
-       (setq p (point))
-       (goto-char (+ p distance))))
-     ((string-equal "\?" copy) (setq query t))
-     ((string-equal "\!" copy) (setq query nil))
-     ((string-equal "\\n" copy)
-      (if (not query)
-       (progn (LilyPond-indent-line) (insert "\n") (LilyPond-indent-line))))
-     ((string-equal "{" copy)
-      (if (not query)
-	  (progn (insert " { "))))
-     ((string-equal "}" copy)
-      (if (not query)
-       (progn (insert " } ") (setq query nil) )))
-     ((not query)
-      (insert copy))
-     (query
-      (if (y-or-n-p (concat "Proceed with `" copy "'? "))
-       (progn (insert copy) (setq query nil))))
-   ))
-   (if p (goto-char p))
-   (kill-buffer b))
-)
+        )
+    ;; find the place first
+    (if (LilyPond-mark-active)
+        (goto-char (min (mark-marker) (point-marker))))
+    (while (and (not found) (> (get-buffer-size b) (marker-position m)))
+      (setq copy (car (copy-alist (list (eval (symbol-name (read m)))))))
+      (if (string-equal word copy) (setq found t)))
+    (if found (insert word))
+    (if (> (get-buffer-size b) (marker-position m))
+        (setq copy (car (copy-alist (list (eval (symbol-name (read m))))))))
+    (if (not (string-equal "-" copy))
+        (setq found nil))
+    (while (and found (> (get-buffer-size b) (marker-position m)))
+      ;; find next symbol
+      (setq copy (car (copy-alist (list (eval (symbol-name (read m)))))))
+      ;; check whether it is the word, or the word has been found
+      (cond
+       ((string-equal "-" copy) (setq found nil))
+       ((string-equal "%" copy) (insert " " (read-string "Give Arguments: ")))
+       ((string-equal "_" copy)
+        (progn
+          (setq p (point))
+          (goto-char (+ p distance))))
+       ((string-equal "\?" copy) (setq query t))
+       ((string-equal "\!" copy) (setq query nil))
+       ((string-equal "\\n" copy)
+        (if (not query)
+            (progn (LilyPond-indent-line) (insert "\n") (LilyPond-indent-line))))
+       ((string-equal "{" copy)
+        (if (not query)
+	    (progn (insert " { "))))
+       ((string-equal "}" copy)
+        (if (not query)
+            (progn (insert " } ") (setq query nil) )))
+       ((not query)
+        (insert copy))
+       (query
+        (if (y-or-n-p (concat "Proceed with `" copy "'? "))
+            (progn (insert copy) (setq query nil))))
+       ))
+    (if p (goto-char p))
+    (kill-buffer b))
+  )
 
 (defun LilyPond-command-menu-entry (entry)
   ;; Return LilyPond-command-alist ENTRY as a menu item.
@@ -1009,13 +1009,13 @@ The Insert Tag -menu is split into parts if it is long enough."
       (setq lw (nth imin LilyPond-menu-keywords))
       (setq rw (nth imax LilyPond-menu-keywords))
       (add-to-list 'split
-         (let ((l (list (concat (substring lw 0 (min 7 (length lw)))
-				" ... "
-				(substring rw 0 (min 7 (length rw)))))))
-	   (while (<= imin imax)
-	     (add-to-list 'l (nth imin li))
-	     (setq imin (1+ imin)))
-	   (reverse l))))
+                   (let ((l (list (concat (substring lw 0 (min 7 (length lw)))
+				          " ... "
+				          (substring rw 0 (min 7 (length rw)))))))
+	             (while (<= imin imax)
+	               (add-to-list 'l (nth imin li))
+	               (setq imin (1+ imin)))
+	             (reverse l))))
     (if (> (length LilyPond-menu-keywords) 12) (reverse split) li)))
 
 ;;; LilyPond-mode-menu should not be interactive, via "M-x LilyPond-<Tab>"
@@ -1025,9 +1025,9 @@ The Insert Tag -menu is split into parts if it is long enough."
   (append '("LilyPond")
 	  '(["Add index menu" LilyPond-add-imenu-menu])
 	  (list (cons "Insert tag"
-                (cons ["Previously selected" LilyPond-insert-tag-current t]
-                (cons "-----"
-		      (LilyPond-menu-keywords)))))
+                      (cons ["Previously selected" LilyPond-insert-tag-current t]
+                            (cons "-----"
+		                  (LilyPond-menu-keywords)))))
 	  '(("Miscellaneous"
 	     ["Autocompletion"   LilyPond-autocompletion t]
 	     ["(Un)comment Region" LilyPond-comment-region t]
@@ -1176,7 +1176,7 @@ LilyPond-command-alist\t\talist from name to command"
     (progn
       (make-local-variable 'blink-matching-paren-on-screen)
       (setq blink-matching-paren-on-screen t)
-     ))
+      ))
 
   ;; run the mode hook. LilyPond-mode-hook use is deprecated
   (run-hooks 'LilyPond-mode-hook))

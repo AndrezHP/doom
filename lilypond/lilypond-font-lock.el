@@ -1,4 +1,4 @@
-;;;; lilypond-font-lock.el --- syntax coloring for LilyPond mode
+;;;; lilypond-font-lock.el --- syntax coloring for LilyPond mode  -*- lexical-binding: t; -*-
 ;;;;
 ;;;; This file is part of LilyPond, the GNU music typesetter.
 ;;;;
@@ -44,88 +44,88 @@
 	 (rwregex (mapconcat (lambda (x) (concat "" x))  LilyPond-Capitalized-Reserved-Words "\\|"))
 	 (duration "\\([ \t]*\\(128\\|6?4\\|3?2\\|16?\\|8\\)[.]*\\([ \t]*[*][ \t]*[0-9]+\\(/[1-9][0-9]*\\)?\\)?\\)") 
 	 (longduration "\\([ \t]*\\(\\\\\\(longa\\|breve\\|maxima\\)\\)[.]*\\([ \t]*[*][ \t]*[0-9]+\\(/[1-9][0-9]*\\)?\\)?\\)") 
-)
+         )
 
     (list 
-;; Fonts in use (from GNU Emacs Lisp Reference Manual, elisp.ps):
-;; font-lock- (c)omment / (s)tring / (k)eyword / (b)uiltin / (f)unction-name / 
-;;            (v)ariable-name / (t)ype / co(n)stant / (w)arning -face
+     ;; Fonts in use (from GNU Emacs Lisp Reference Manual, elisp.ps):
+     ;; font-lock- (c)omment / (s)tring / (k)eyword / (b)uiltin / (f)unction-name /
+     ;;            (v)ariable-name / (t)ype / co(n)stant / (w)arning -face
 
-;; The order below is designed so that proofreading would be possible.
+     ;; The order below is designed so that proofreading would be possible.
 
-;; Fontify...
-;; ... (f) identifiers and (k) keywords.
-;; ... (n) user defined indetifiers
-;; ... (v) the right and the left side of '='-marks.
-;; ... (v) reserved words, e.g., FiguredBass.
-;; ... (t) notes and rests
-;; "on top", ... (s) lyrics-mode
-;; "on top", ... (w) horizontal grouping
-;; "on top", ... (f) vertical grouping
-;; "on top", ... (b) expressional grouping
-;; "on top", ... (s) (multiline-)scheme; urgh. one should count the slurs
-;; "on top", ... (s) strings
-;; "on top", ... (c) (multiline-)comments
+     ;; Fontify...
+     ;; ... (f) identifiers and (k) keywords.
+     ;; ... (n) user defined indetifiers
+     ;; ... (v) the right and the left side of '='-marks.
+     ;; ... (v) reserved words, e.g., FiguredBass.
+     ;; ... (t) notes and rests
+     ;; "on top", ... (s) lyrics-mode
+     ;; "on top", ... (w) horizontal grouping
+     ;; "on top", ... (f) vertical grouping
+     ;; "on top", ... (b) expressional grouping
+     ;; "on top", ... (s) (multiline-)scheme; urgh. one should count the slurs
+     ;; "on top", ... (s) strings
+     ;; "on top", ... (c) (multiline-)comments
 
-;; One should note 'font-lock-multiline' has been possible since Emacs 21.1.
-;; See, e.g., text in "http://emacs.kldp.org/emacs-21.1/etc/NEWS".
+     ;; One should note 'font-lock-multiline' has been possible since Emacs 21.1.
+     ;; See, e.g., text in "http://emacs.kldp.org/emacs-21.1/etc/NEWS".
 
-;; ... identifiers (defined above, see iregex)
-      (cons (concat "\\(\\([_^-]?\\(" iregex "\\)\\)+\\)\\($\\|[] \t(~{}>\\\\_()^*-]\\)") '(1 font-lock-function-name-face))
+     ;; ... identifiers (defined above, see iregex)
+     (cons (concat "\\(\\([_^-]?\\(" iregex "\\)\\)+\\)\\($\\|[] \t(~{}>\\\\_()^*-]\\)") '(1 font-lock-function-name-face))
 
-;; ... keywords (defined above, see kwregex)
-      (cons (concat "\\(\\([_^-]?\\(" kwregex "\\)\\)+\\)\\($\\|[] \t(~{}>\\\\_()^*-]\\)") '(1 font-lock-keyword-face))
+     ;; ... keywords (defined above, see kwregex)
+     (cons (concat "\\(\\([_^-]?\\(" kwregex "\\)\\)+\\)\\($\\|[] \t(~{}>\\\\_()^*-]\\)") '(1 font-lock-keyword-face))
 
-;; ... user defined identifiers, roughly  \[a-zA-Z]+ with single - or _ in between.
-      '("\\([_^-]?\\\\\\([a-zA-Z[:nonascii:]]\\(?:[-_]?[a-zA-Z[:nonascii:]]\\)*\\)\\)" 1 font-lock-constant-face)
+     ;; ... user defined identifiers, roughly  \[a-zA-Z]+ with single - or _ in between.
+     '("\\([_^-]?\\\\\\([a-zA-Z[:nonascii:]]\\(?:[-_]?[a-zA-Z[:nonascii:]]\\)*\\)\\)" 1 font-lock-constant-face)
 
-;; ... the left side of '=' -mark
-      '("\\([_a-zA-Z.0-9-]+\\)[ \t]*=[ \t]*" 1 font-lock-variable-name-face)
+     ;; ... the left side of '=' -mark
+     '("\\([_a-zA-Z.0-9-]+\\)[ \t]*=[ \t]*" 1 font-lock-variable-name-face)
 
-;; ... the right side of '=' -mark
-      '("[ \t]*=[ \t]*\\([_a-zA-Z.0-9-]+\\)" 1 font-lock-variable-name-face)
+     ;; ... the right side of '=' -mark
+     '("[ \t]*=[ \t]*\\([_a-zA-Z.0-9-]+\\)" 1 font-lock-variable-name-face)
 
-;; ... reserved words (defined above, see rwregex)
-      (cons (concat "\\(" rwregex "\\)") 'font-lock-variable-name-face)
+     ;; ... reserved words (defined above, see rwregex)
+     (cons (concat "\\(" rwregex "\\)") 'font-lock-variable-name-face)
 
-;; ... note or rest with (an accidental and) a duration, e.g., b,?16.*3/4
-      (cons (concat "\\(^\\|[ <\{[/~(!)\t\\\|]\\)\\(\\(\\(" ncrwregex "\\)[,']*[?!]?\\|[srR]\\)" duration "?\\)") '(2 font-lock-type-face))
+     ;; ... note or rest with (an accidental and) a duration, e.g., b,?16.*3/4
+     (cons (concat "\\(^\\|[ <\{[/~(!)\t\\\|]\\)\\(\\(\\(" ncrwregex "\\)[,']*[?!]?\\|[srR]\\)" duration "?\\)") '(2 font-lock-type-face))
 
-;; "on top", ... notes and rests with a long duration
-      (cons (concat "\\(^\\|[ <\{[/~(!)\t\\\|]\\)\\(\\(\\(" ncrwregex "\\)[,']*[?!]?\\|[srR]\\)" longduration "\\)") '(2 font-lock-type-face t))
+     ;; "on top", ... notes and rests with a long duration
+     (cons (concat "\\(^\\|[ <\{[/~(!)\t\\\|]\\)\\(\\(\\(" ncrwregex "\\)[,']*[?!]?\\|[srR]\\)" longduration "\\)") '(2 font-lock-type-face t))
 
-;; "on top", ... lyrics-mode: fontify everything between '<'...'>' or '{'...'}'
-;            URGH, does not know anything about inner brackets.
-;            Multiple lines may need refontifying (C-c f).
-      '("\\(\\\\lyrics[^{<]*\\)\\({[^}]*\\|<[^>]*\\)" 2 font-lock-string-face t)
+     ;; "on top", ... lyrics-mode: fontify everything between '<'...'>' or '{'...'}'
+                                        ;            URGH, does not know anything about inner brackets.
+                                        ;            Multiple lines may need refontifying (C-c f).
+     '("\\(\\\\lyrics[^{<]*\\)\\({[^}]*\\|<[^>]*\\)" 2 font-lock-string-face t)
 
-;; "on top", ... horizontal grouping, also as postfix syntax '-*':
-;;               - brackets '{[]}'
-;;               - ties '~'
-;;               - ligatures \[, \]
-      '("\\(-?[][~}{]\\|\\\\[][]\\)" 0 font-lock-constant-face t)
+     ;; "on top", ... horizontal grouping, also as postfix syntax '-*':
+     ;;               - brackets '{[]}'
+     ;;               - ties '~'
+     ;;               - ligatures \[, \]
+     '("\\(-?[][~}{]\\|\\\\[][]\\)" 0 font-lock-constant-face t)
 
-;; "on top", ... vertical grouping:
-;;               - '<>'-chord brackets with '\\'-voice sep., not marcato '->'
-;;               - '<< a b >>8' -chords
-      (cons (concat "\\(\\(-.\\)+\\|[^-^_]\\)\\([<>]+\\(" duration "\\|" longduration "\\)?\\|\\\\\\\\\\)") '(3 font-lock-function-name-face t))
+     ;; "on top", ... vertical grouping:
+     ;;               - '<>'-chord brackets with '\\'-voice sep., not marcato '->'
+     ;;               - '<< a b >>8' -chords
+     (cons (concat "\\(\\(-.\\)+\\|[^-^_]\\)\\([<>]+\\(" duration "\\|" longduration "\\)?\\|\\\\\\\\\\)") '(3 font-lock-function-name-face t))
 
-;; "on top", ... expressional grouping, also as postfix syntax '-*':
-;;               - slurs ( ), \( \), [-^_][()]
-;;               - hairpins \<, \>, \! 
-      '("\\(-?\\\\[(<!>)]\\|[-^_]?[()]\\)" 0 font-lock-builtin-face t)
+     ;; "on top", ... expressional grouping, also as postfix syntax '-*':
+     ;;               - slurs ( ), \( \), [-^_][()]
+     ;;               - hairpins \<, \>, \!
+     '("\\(-?\\\\[(<!>)]\\|[-^_]?[()]\\)" 0 font-lock-builtin-face t)
 
-;; "on top", ... (multiline-)scheme: try find slurs up to 7th
-      '("[_^-]?#\\(#[ft]\\|-?[0-9.]+\\|\"[^\"]*\"\\|['`]?[a-zA-Z:-]+\\|['`]?([^()]*\\(([^()]*\\(([^()]*\\(([^()]*\\(([^()]*\\(([^()]*\\(([^)]*)[^()]*\\)*)[^()]*\\)*)[^()]*\\)*)[^()]*\\)*)[^()]*\\)*)[^()]*\\)*[^)]*)\\)" 0 font-lock-string-face t)
+     ;; "on top", ... (multiline-)scheme: try find slurs up to 7th
+     '("[_^-]?#\\(#[ft]\\|-?[0-9.]+\\|\"[^\"]*\"\\|['`]?[a-zA-Z:-]+\\|['`]?([^()]*\\(([^()]*\\(([^()]*\\(([^()]*\\(([^()]*\\(([^()]*\\(([^)]*)[^()]*\\)*)[^()]*\\)*)[^()]*\\)*)[^()]*\\)*)[^()]*\\)*)[^()]*\\)*[^)]*)\\)" 0 font-lock-string-face t)
 
-;; "on top", ... strings, match also unending strings at eof:
-;;               if '\n' was not found, it must be '$' which is eof (?).
-      '("\\([_^-]?\"\\([^\"\\\\]\\|\\\\.\\|\\\\\n\\)*\\(\"\\|$\\)\\)" 0 font-lock-string-face t)
+     ;; "on top", ... strings, match also unending strings at eof:
+     ;;               if '\n' was not found, it must be '$' which is eof (?).
+     '("\\([_^-]?\"\\([^\"\\\\]\\|\\\\.\\|\\\\\n\\)*\\(\"\\|$\\)\\)" 0 font-lock-string-face t)
 
-;; "on top", ... (multiline-)comments
-      '("\\(%\\({[^%]*%\\(}\\|\\([^}][^%]*%\\)+}\\)\\|.*\\)\\)" 0 font-lock-comment-face t)
+     ;; "on top", ... (multiline-)comments
+     '("\\(%\\({[^%]*%\\(}\\|\\([^}][^%]*%\\)+}\\)\\|.*\\)\\)" 0 font-lock-comment-face t)
 
-      )
+     )
     )
   "Additional expressions to fontify in LilyPond mode.")
 
@@ -143,20 +143,20 @@
   (if (not not-punct) (setq not-punct '()))
   (setq LilyPond-mode-syntax-table (make-syntax-table))
   (let ((defaults 	  
-	  '(
-	    ;; NOTE: Emacs knows only "13"-style (used), XEmacs knows also "1b3b", etc.
-	    ( ?\% . "< 13" )   ; comment starter, 1st char in block-comments
-	    ( ?\n . ">")       ; newline: comment ender
-	    ( ?\r . ">")       ; formfeed: comment ender
-	    ( ?\\ . "\\" )     ; escape characters (as '\n' in strings)
-	    ( ?\" . "\"" )     ; string quote characters
-	    ;; word constituents (e.g., belonging to a note)
-	    ( ?\' . "w") ( ?\, . "w") ; transposing octaves
-	    ;; punctuation characters (separate symbols from another)
-	    ( ?\$ . "." ) ( ?\& . "." )
-	    ( ?\* . "." ) ( ?\+ . "." ) ( ?\/ . "." )  ( ?\= . "." )
-	    ( ?\| . "." )      ; bar line
-	    )))
+	 '(
+	   ;; NOTE: Emacs knows only "13"-style (used), XEmacs knows also "1b3b", etc.
+	   ( ?\% . "< 13" )   ; comment starter, 1st char in block-comments
+	   ( ?\n . ">")       ; newline: comment ender
+	   ( ?\r . ">")       ; formfeed: comment ender
+	   ( ?\\ . "\\" )     ; escape characters (as '\n' in strings)
+	   ( ?\" . "\"" )     ; string quote characters
+	   ;; word constituents (e.g., belonging to a note)
+	   ( ?\' . "w") ( ?\, . "w") ; transposing octaves
+	   ;; punctuation characters (separate symbols from another)
+	   ( ?\$ . "." ) ( ?\& . "." )
+	   ( ?\* . "." ) ( ?\+ . "." ) ( ?\/ . "." )  ( ?\= . "." )
+	   ( ?\| . "." )      ; bar line
+	   )))
     ;; all the paren characters are now handled by lily-specific indenting/matching code in lilypond-indent.el
     (if (or (memq ?\{ not-punct) (memq ?\} not-punct))
 	(setq defaults (cons '( ?\{ . "(} 2" ) (cons '( ?\} . "){ 4" ) defaults))) ; begin and end of a block-comment
