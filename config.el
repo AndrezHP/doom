@@ -5,28 +5,11 @@
 ;;       user-mail-address "john@doe.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
-;;
 ;; - `doom-font' -- the primary font to use
 ;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
+;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for presentations or streaming.
 ;; - `doom-symbol-font' -- for symbols
 ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
-;;
-;; See 'C-h v doom-font' for documentation and more examples of what they
-;; accept. For example:
-;;
-;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
-;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
-;;
-;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
-;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
-;; refresh your font settings. If Emacs still can't find your font, it likely
-;; wasn't installed correctly. Font issues are rarely Doom issues!
-
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type "relative")
 (setq doom-theme 'doom-tomorrow-night)
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)) ;; Nerd Font preferred
 (setq doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 15))
@@ -136,6 +119,18 @@
 (add-hook 'prog-mode-hook #'rainbow-mode) ;; Show colors inline in prog-mode
 (setq org-hide-emphasis-markers t) ;; Hide emphasis markers in *sentence* and /sentence/ etc.
 
+(defun ahp/run-command (cmd)
+  (interactive)
+  (+vterm/toggle nil)
+  (vterm-send-string cmd)
+  (vterm-send-return))
+(defun ahp/sync-mail ()
+  (interactive)
+  (ahp/run-command-exit-on-success "mbsync -c ~/.emacs.d/mu4e/.mbsyncrc -a"))
+(map! :map mu4e-main-mode-map
+      :localleader
+      "s" #'ahp/sync-mail)
+
 (defun ahp/run-command-exit-on-success (command)
   "Open vterm, run COMMAND, and auto-close if it exits successfully."
   (interactive)
@@ -190,7 +185,9 @@
      :select t)))
 
 (setq load-path (append (list (expand-file-name "./lilypond")) load-path))
-(require 'lilypond-mode)
+(condition-case nil
+    (require 'lilypond-mode)
+  (error (message "Optional: 'some-feature' not found, ignoring...")))
 
 ;; nov.el
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
