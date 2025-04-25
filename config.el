@@ -123,25 +123,26 @@
   (interactive)
   (+vterm/toggle nil)
   (vterm-send-string cmd)
+  (vterm-send-return)
+  (other-window 1))
+(defun ahp/run-command-exit-on-success (command)
+  (interactive)
+  (+vterm/toggle nil)
+  (vterm-send-string (format "%s; if [ $? -eq 0 ]; then exit; fi" command))
   (vterm-send-return))
+
 (defun ahp/sync-mail ()
   (interactive)
-  (ahp/run-command-exit-on-success "mbsync -c ~/.emacs.d/mu4e/.mbsyncrc -a"))
+  (ahp/run-command-exit-on-success "mbsync -c ~/.emacs.d/mu4e/.mbsyncrc -a")
+  (other-window 1))
 (map! :map mu4e-main-mode-map
       :localleader
       "s" #'ahp/sync-mail)
 
-(defun ahp/run-command-exit-on-success (command)
-  "Open vterm, run COMMAND, and auto-close if it exits successfully."
-  (interactive)
-  (vterm)
-  (vterm-send-string (format "%s; if [ $? -eq 0 ]; then exit; fi" command))
-  (vterm-send-return))
-
 (defun ahp/build-home ()
   (interactive)
-  (ahp/run-command-exit-on-success "bh")
-  (other-window 1))
+  (+vterm/toggle nil)
+  (ahp/run-command "bh"))
 (defun ahp/build-system ()
   (interactive)
   (ahp/run-command-exit-on-success "bs"))
@@ -161,10 +162,10 @@
 ;; devdocs keybindings
 (map! :leader :n
       :desc "devdocs-lookup" "d l" #'devdocs-lookup
-      :desc "devdocs-install" "d i" #'devdocs-install
-      :desc "devdocs-delete" "d d" #'devdocs-delete)
+      :desc "devdocs-install" "d i" #'devdocs-install)
 
 (map! :desc "other window" "M-o" #'other-window)
+(map! :leader :n :desc "language translate" "l t" #'google-translate-query-translate)
 
 ;;;; Custom popup rules
 (set-popup-rules!
@@ -192,3 +193,13 @@
 ;; nov.el
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
+;;;; TODO Setup ollama to run something like deepseek r1 locally and use with gptel
+;; - AI: copilot/ellama (completion), gptel - LLM client with multiple models
+
+;;;; TODO look at these packages
+;; - EMMS - emacs media system
+;; - org-super-agenda (Group agenda into sections)
+;; - docker.el (builting docker interface)
+;; - kubernetes-el (magit-like kubernetes command-line client)
+;; - lilypond-mode - for lilypond music notation editing (installed, learn to use it)
+;; - sql-mode / pgmacs for database/postgres management

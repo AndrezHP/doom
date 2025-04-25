@@ -56,3 +56,5 @@
 (package! rainbow-mode)
 (package! devdocs) ;; Browsing documentation at devdocs offline
 (package! nov)
+(package! google-translate)
+(package! gptel)
