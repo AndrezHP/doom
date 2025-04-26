@@ -178,6 +178,11 @@
      :size 0.5
      :quit t
      :select t)
+    ("^\\*Google Translate.*\\*$"
+     :side right
+     :size 0.4
+     :quit t
+     :select t)
     ("^\\*helpful.*\\*$"
      :side right
      :size 0.4
