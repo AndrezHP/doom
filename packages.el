@@ -58,3 +58,4 @@
 (package! nov)
 (package! google-translate)
 (package! gptel)
+(package! docker)

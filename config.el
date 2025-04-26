@@ -13,7 +13,7 @@
 (setq doom-theme 'doom-tomorrow-night)
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)) ;; Nerd Font preferred
 (setq doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 15))
-(setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"))
+(setq nerd-icons-font-names '("NFM.ttf"))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -195,11 +195,3 @@
 
 ;;;; TODO Setup ollama to run something like deepseek r1 locally and use with gptel
 ;; - AI: copilot/ellama (completion), gptel - LLM client with multiple models
-
-;;;; TODO look at these packages
-;; - EMMS - emacs media system
-;; - org-super-agenda (Group agenda into sections)
-;; - docker.el (builting docker interface)
-;; - kubernetes-el (magit-like kubernetes command-line client)
-;; - lilypond-mode - for lilypond music notation editing (installed, learn to use it)
-;; - sql-mode / pgmacs for database/postgres management
