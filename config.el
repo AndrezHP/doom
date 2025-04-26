@@ -165,7 +165,6 @@
       :desc "devdocs-install" "d i" #'devdocs-install)
 
 (map! :desc "other window" "M-o" #'other-window)
-(map! :leader :n :desc "language translate" "l t" #'google-translate-query-translate)
 
 ;;;; Custom popup rules
 (set-popup-rules!
@@ -183,6 +182,11 @@
      :side right
      :size 0.4
      :quit t
+     :select t)
+    ("^\\*Ollama.*\\*$"
+     :side right
+     :size 0.4
+     :quit t
      :select t)))
 
 (setq load-path (append (list (expand-file-name "./lilypond")) load-path))
@@ -193,5 +197,20 @@
 ;; nov.el
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
-;;;; TODO Setup ollama to run something like deepseek r1 locally and use with gptel
-;; - AI: copilot/ellama (completion), gptel - LLM client with multiple models
+(setq gptel-model 'gemma3:4b
+      gptel-backend (gptel-make-ollama "Ollama-gemma3:4b"
+                      :host "localhost:11434"
+                      :stream t
+                      :models '(gemma3:4b)))
+(gptel-make-ollama "Ollama-deepseek-r1:8b"
+  :host "localhost:11434"
+  :stream t
+  :models '(deepseek-r1:8b))
+(map! :leader :n :desc "open gptel LLMs" "o l" #'gptel)
+
+;; Easy google translate access
+(setq google-translate-translation-directions-alist '(("en" . "da") ("da" . "en")))
+(setq google-translate-default-source-language "en")
+(setq google-translate-default-target-language "da")
+(map! :leader :n :desc "language translate" "l t" #'google-translate-smooth-translate)
+(map! :leader :n :desc "language translate at point" "l p" #'google-translate-at-point)
