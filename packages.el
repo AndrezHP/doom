@@ -59,3 +59,4 @@
 (package! google-translate)
 (package! gptel)
 (package! docker)
+(package! speed-type)

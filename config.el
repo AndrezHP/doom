@@ -219,3 +219,9 @@
 (setq google-translate-default-target-language "da")
 (map! :leader :n :desc "language translate" "l t" #'google-translate-smooth-translate)
 (map! :leader :n :desc "language translate at point" "l p" #'google-translate-at-point)
+
+(add-hook 'speed-type-mode-hook #'writeroom-mode)
+(map! :leader :n :desc "speed-type" "o s" #'speed-type-top-1000)
+(map! :map speed-type-mode-map :localleader "q" #'speed-type--quit)
+(map! :map speed-type-mode-map :localleader "r" #'speed-type--play-next)
+(setq speed-type-default-lang "English")
