@@ -141,7 +141,6 @@
 
 (defun ahp/build-home ()
   (interactive)
-  (+vterm/toggle nil)
   (ahp/run-command "bh"))
 (defun ahp/build-system ()
   (interactive)
