@@ -10,7 +10,7 @@
 ;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for presentations or streaming.
 ;; - `doom-symbol-font' -- for symbols
 ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
-(setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-tokyo-night)
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)) ;; Nerd Font preferred
 (setq doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 15))
 (setq nerd-icons-font-names '("NFM.ttf"))
@@ -49,6 +49,12 @@
 
 (map! :desc "Toggle terminal" :ni "C-/" '+vterm/toggle) ;; Map terminal as in neovim
 
+;; Evil window navigation with C-hjkl
+(map! :desc "Evil window left" "C-h" 'evil-window-left) ;; Map terminal as in neovim
+(map! :desc "Evil window down" "C-j" 'evil-window-down) ;; Map terminal as in neovim
+(map! :desc "Evil window up" "C-k" 'evil-window-up) ;; Map terminal as in neovim
+(map! :desc "Evil window right" "C-l" 'evil-window-right) ;; Map terminal as in neovim
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
@@ -70,9 +76,6 @@
                     (?C . "LOW")))))
 
 (after! org (setq org-startup-folded 'show2levels))
-
-;;;; Set the fold symbol in org-mode
-;; (setq org-ellipsis " ▼")
 
 (setq flyspell-mode -1) ;; Disable spell checking by default
 
@@ -200,6 +203,7 @@
 
 ;; nov.el
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+(add-hook 'nov-mode-hook #'olivetti-mode)
 
 (setq gptel-model 'gemma3:4b
       gptel-backend (gptel-make-ollama "Ollama-gemma3:4b"
@@ -219,8 +223,10 @@
 (map! :leader :n :desc "language translate" "l t" #'google-translate-smooth-translate)
 (map! :leader :n :desc "language translate at point" "l p" #'google-translate-at-point)
 
-(add-hook 'speed-type-mode-hook #'writeroom-mode)
+(add-hook 'speed-type-mode-hook #'olivetti-mode)
 (map! :leader :n :desc "speed-type" "o s" #'speed-type-top-1000)
 (map! :map speed-type-mode-map :localleader "q" #'speed-type--quit)
 (map! :map speed-type-mode-map :localleader "r" #'speed-type--play-next)
 (setq speed-type-default-lang "English")
+
+(setq which-key-idle-delay 0.2)

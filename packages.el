@@ -60,3 +60,4 @@
 (package! gptel)
 (package! docker)
 (package! speed-type)
+(package! olivetti)
