@@ -169,7 +169,7 @@
 
 ;;;; Custom popup rules
 (set-popup-rules!
-  '(("^\\*devdocs\\*"
+  '(("^\\*devdocs"
      :side right
      :size 0.5
      :quit t
@@ -189,6 +189,16 @@
      :size 0.4
      :quit t
      :select t)
+    (".*gptel.*"
+     :side right
+     :size 0.4
+     :quit t
+     :select t)
+    ("doc"
+     :side right
+     :size 0.4
+     :quit t
+     :select t)
     ("^\\*Ollama.*\\*$"
      :side right
      :size 0.4
@@ -204,16 +214,62 @@
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 (add-hook 'nov-mode-hook #'olivetti-mode)
 
-(setq gptel-model 'gemma3:4b
-      gptel-backend (gptel-make-ollama "Ollama-gemma3:4b"
-                      :host "localhost:11434"
-                      :stream t
-                      :models '(gemma3:4b)))
 (gptel-make-ollama "Ollama-deepseek-r1:8b"
   :host "localhost:11434"
   :stream t
   :models '(deepseek-r1:8b))
-(map! :leader :n :desc "open gptel LLMs" "o l" #'gptel)
+
+(setq gptel-model 'gemma3:4b
+      gptel-backend (gptel-make-ollama "Ollama-gemma3:4b"
+                      :host "localhost:11434"
+                      :stream t
+                      :models '(gemma3:4b))
+      gptel-use-tools -1)
+
+(map! :leader :n :desc "abort gptel" "o q" #'gptel-abort)
+(map! :leader :n :desc "open gptel LLMs" "o l" #'my/gptel)
+
+(defun my/gptel ()
+  (interactive)
+  (with-current-buffer (get-buffer-create "gptel-default")
+    (cond
+     ((eq major-mode gptel-default-mode))
+     ((eq gptel-default-mode 'text-mode)
+      (text-mode)
+      (visual-line-mode 1))
+     (t (funcall gptel-default-mode)))
+    (gptel--sanitize-model :backend (default-value 'gptel-backend)
+                           :model (default-value 'gptel-model)
+                           :shoosh nil)
+    (unless gptel-mode (gptel-mode 1))
+    (goto-char (point-max))
+    (skip-chars-backward "\t\r\n")
+    (if (bobp) (insert "### "))
+    (display-buffer (current-buffer) gptel-display-buffer-action)
+    (message "Send your query with %s!"
+             (substitute-command-keys "\\[gptel-send]"))
+    (current-buffer))
+  )
+
+(defun gptel-lookup (prompt)
+  (interactive (list (read-string "Ask the LLM: " nil gptel-lookup--history)))
+  (when (string= prompt "") (user-error "A prompt is required."))
+  (gptel-request
+      prompt
+    :callback
+    (lambda (response info)
+      (if (not response)
+          (message "gptel-lookup failed with message: %s" (plist-get info :status))
+        (with-current-buffer (get-buffer-create "*gptel-lookup*")
+          (let ((inhibit-read-only t))
+            (erase-buffer)
+            (insert response))
+          (special-mode)
+          (display-buffer (current-buffer)
+                          `((display-buffer-in-side-window)
+                            (side . bottom)
+                            (window-height . ,#'fit-window-to-buffer))))))))
+
 
 ;; Easy google translate access
 (setq google-translate-translation-directions-alist '(("en" . "da") ("da" . "en")))
