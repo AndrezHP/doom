@@ -61,3 +61,4 @@
 (package! docker)
 (package! speed-type)
 (package! olivetti)
+(package! lsp-ui)

@@ -114,9 +114,8 @@
 
 ;; Disable invasive lsp-mode features
 (after! lsp-mode
-  (setq lsp-enable-symbol-highlighting nil
-        lsp-enable-suggest-server-download nil))
-(after! lsp-ui (setq lsp-ui-doc-enable nil)) ; redundant with K
+  (setq lsp-enable-symbol-highlighting nil))
+;; (after! lsp-ui (setq lsp-ui-doc-enable nil)) ; redundant with K
 
 (add-hook 'dired-mode-hook #'dired-hide-details-mode) ;; Hide details by default in dired
 (add-hook 'prog-mode-hook #'rainbow-mode) ;; Show colors inline in prog-mode
