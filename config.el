@@ -288,3 +288,5 @@
 (setq speed-type-default-lang "English")
 
 (setq which-key-idle-delay 0.2)
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
