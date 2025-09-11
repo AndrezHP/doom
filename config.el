@@ -290,3 +290,40 @@
 (setq which-key-idle-delay 0.2)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+;; Intellj-like next/prev-function search
+(map! :ni :desc "goto next method" "M-j" #'+evil/next-beginning-of-method
+      :ni :desc "goto previous method" "M-k" #'+evil/previous-beginning-of-method)
+
+(setq lsp-java-java-path "/home/andreas/.nix-profile/bin/java")
+
+(defvar java-function-regexp
+  (concat
+   "\\("
+   " class \\| interface \\| enum \\|"
+   "\\([a-zA-Z0-9]+\\)"
+   "("
+   "\\([^((.\()]*\\)"
+   ") {"
+   "\\)"
+   ))
+
+(defun my/next-java-method ()
+  (interactive)
+  (forward-line)
+  (search-forward-regexp java-function-regexp nil t)
+  (evil-last-non-blank)
+  (evil-find-char-backward 1 ?\))
+  (evil-jump-item)
+  (evil-backward-word-begin))
+
+(defun my/prev-java-method ()
+  (interactive)
+  (search-backward-regexp java-function-regexp nil t)
+  (evil-first-non-blank)
+  (evil-find-char 1 ?\()
+  (evil-backward-word-begin))
+
+(map! :map java-mode-map
+      :ni "M-k" #'my/prev-java-method
+      :ni "M-j" #'my/next-java-method)
