@@ -298,27 +298,41 @@
 (setq lsp-java-java-path "/home/andreas/.nix-profile/bin/java")
 
 (defvar java-function-regexp
-  (concat
-   "\\("
-   " class \\| interface \\| enum \\|"
-   "\\([a-zA-Z0-9]+\\)"
-   "("
-   "\\([^((.\()]*\\)"
-   ") {"
-   "\\)"
-   ))
+  (rx (or
+       " class "
+       (seq " enum " (+ alnum) " {")
+       (seq "record " (+ alnum) "(")
+       (seq " interface " (+ alnum) " {")
+       (seq space
+            (+ alnum)
+            "("
+            (* (or (seq (or "." "@") (+ alnum) "(") (not "(")))
+            ") {")
+       )))
+
+(defun line-contains-string-p (str)
+  "Return t if the current line contains STR."
+  (save-excursion
+    (let ((line-start (line-beginning-position)))
+      (search-backward str line-start t))))
 
 (defun my/next-java-method ()
   (interactive)
-  (forward-line)
+  (evil-set-jump)
+  (if (line-contains-string-p "{") (search-forward "{") (forward-line))
   (search-forward-regexp java-function-regexp nil t)
   (evil-last-non-blank)
-  (evil-find-char-backward 1 ?\))
-  (evil-jump-item)
-  (evil-backward-word-begin))
+  (if (line-contains-string-p ")")
+      (progn
+        (evil-find-char-backward 1 ?\))
+        (evil-jump-item)
+        (evil-backward-word-begin))
+    (evil-backward-word-begin)
+    ))
 
 (defun my/prev-java-method ()
   (interactive)
+  (evil-set-jump)
   (search-backward-regexp java-function-regexp nil t)
   (evil-first-non-blank)
   (evil-find-char 1 ?\()
