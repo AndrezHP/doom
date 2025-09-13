@@ -327,3 +327,27 @@
 (map! :map java-mode-map
       :ni "M-k" #'my/prev-java-method
       :ni "M-j" #'my/next-java-method)
+
+(defun my/project-todo-toggle ()
+  (interactive)
+  (let* ((file-name "project.org")
+         (file-path (concat (projectile-project-root) file-name))
+         confirm-kill-processes)
+    (unless (file-exists-p file-path)
+      (write-region "#+title: Project\n\n* TODO's\n- [ ] \n* Questions/Thoughts" nil file-path))
+    (if-let* ((win (get-buffer-window file-name)))
+        (delete-window win)
+      (let ((buffer (or (get-file-buffer file-path) (find-file-noselect file-path))))
+        (with-current-buffer buffer
+          (unless (eq major-mode 'org-mode)
+            (org-mode)))
+        (pop-to-buffer (get-file-buffer file-path))))))
+(map! :map projectile-mode-map
+      :leader :n "p t" #'my/project-todo-toggle)
+(set-popup-rules!
+  '((
+     "project.org"
+     :side right
+     :size 0.3
+     :quit t
+     :select t)))
