@@ -355,7 +355,7 @@
         (with-current-buffer buffer
           (unless (eq major-mode 'org-mode)
             (org-mode)))
-        (pop-to-buffer (get-file-buffer file-path))))))
+        (pop-to-buffer buffer)))))
 (map! :map projectile-mode-map
       :leader :n "p t" #'my/project-todo-toggle)
 (set-popup-rules!
@@ -364,4 +364,5 @@
      :side right
      :size 0.3
      :quit t
+     :autosave t
      :select t)))
