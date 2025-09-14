@@ -291,9 +291,19 @@
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+(defun my/next-method ()
+  (interactive)
+  (evil-set-jump)
+  (beginning-of-defun (- 1)))
+
+(defun my/previous-method ()
+  (interactive)
+  (evil-set-jump)
+  (beginning-of-defun 1))
+
 ;; Intellj-like next/prev-function search
-(map! :ni :desc "goto next method" "M-j" #'+evil/next-beginning-of-method
-      :ni :desc "goto previous method" "M-k" #'+evil/previous-beginning-of-method)
+(map! :ni :desc "goto next method" "M-j" #'my/next-method
+      :ni :desc "goto previous method" "M-k" #'my/previous-method)
 
 (setq lsp-java-java-path "/home/andreas/.nix-profile/bin/java")
 
@@ -307,8 +317,7 @@
             (+ alnum)
             "("
             (* (or (seq (or "." "@") (+ alnum) "(") (not "(")))
-            ") {")
-       )))
+            ") {"))))
 
 (defun line-contains-string-p (str)
   "Return t if the current line contains STR."
@@ -349,15 +358,21 @@
          confirm-kill-processes)
     (unless (file-exists-p file-path)
       (write-region "#+title: Project\n\n* TODO's\n- [ ] \n* Questions/Thoughts" nil file-path))
-    (if-let* ((win (get-buffer-window file-name)))
+    (if-let* ((workspace-buffer (get-workspace-buffer file-name))
+              (win (when workspace-buffer (get-buffer-window workspace-buffer))))
         (delete-window win)
       (let ((buffer (or (get-file-buffer file-path) (find-file-noselect file-path))))
         (with-current-buffer buffer
           (unless (eq major-mode 'org-mode)
             (org-mode)))
         (pop-to-buffer buffer)))))
-(map! :map projectile-mode-map
-      :leader :n "p t" #'my/project-todo-toggle)
+
+(defun get-workspace-buffer (name)
+  (cl-loop for buf in (+workspace-buffer-list)
+           if (s-starts-with-p name (buffer-name buf)) return buf))
+
+(map! :map projectile-mode-map :leader :n "p t" #'my/project-todo-toggle)
+
 (set-popup-rules!
   '((
      "project.org"
