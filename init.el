@@ -96,8 +96,9 @@
        (go +lsp +tree-sitter)         ; the hipster dialect
        (haskell +lsp +tree-sitter)    ; a language that's lazier than I am
        (java +lsp +tree-sitter)       ; the poster child for carpal tunnel syndrome
+       ;; (kotlin +lsp)
        (graphql +lsp)    ; Give queries a REST
-       (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
+       (javascript +lsp +tree-sitter)        ; all(hope(abandon(ye(who(enter(here))))))
        ocaml             ; an objective camel
        latex             ; writing papers in Emacs has never been so fun
        (lua              ; one-based indices? one-based indices

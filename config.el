@@ -10,10 +10,10 @@
 ;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for presentations or streaming.
 ;; - `doom-symbol-font' -- for symbols
 ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
-(setq doom-theme 'doom-tokyo-night)
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)) ;; Nerd Font preferred
-(setq doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 15))
-(setq nerd-icons-font-names '("NFM.ttf"))
+(setq doom-theme 'doom-tokyo-night
+      doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15) ;; Nerd Font preferred
+      doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)
+      nerd-icons-font-names '("NFM.ttf"))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -49,15 +49,14 @@
 
 (map! :desc "Toggle terminal" :ni "C-/" '+vterm/toggle) ;; Map terminal as in neovim
 
-;; Evil window navigation with C-hjkl
-(map! :desc "Evil window left" "C-h" 'evil-window-left) ;; Map terminal as in neovim
-(map! :desc "Evil window down" "C-j" 'evil-window-down) ;; Map terminal as in neovim
-(map! :desc "Evil window up" "C-k" 'evil-window-up) ;; Map terminal as in neovim
-(map! :desc "Evil window right" "C-l" 'evil-window-right) ;; Map terminal as in neovim
+;; Evil window navigation with C-hjk
+(map! :desc "Evil window left" "C-h" 'evil-window-left
+      :desc "Evil window down" "C-j" 'evil-window-down
+      :desc "Evil window up" "C-k" 'evil-window-up
+      :desc "Evil window right" "C-l" 'evil-window-right)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
 (setq deft-directory "~/org/"
       deft-extensions '("txt" "org" "md")
       deft-recursive t)
@@ -65,7 +64,8 @@
       org-journal-time-prefix "* "
       org-journal-date-format "%a, %Y-%m-%d"
       org-journal-file-format "%Y-%m-%d.org")
-(setq org-roam-directoiry "~/org/roam")
+(setq org-directory "~/org/"
+      org-roam-directoiry "~/org/roam")
 
 (after! org
   (use-package org-fancy-priorities
@@ -115,9 +115,8 @@
 ;; Disable invasive lsp-mode features
 (after! lsp-mode
   (setq lsp-enable-symbol-highlighting nil))
-;; (after! lsp-ui (setq lsp-ui-doc-enable nil)) ; redundant with K
+(after! lsp-ui (setq lsp-ui-doc-enable nil)) ; redundant with K
 
-(add-hook 'dired-mode-hook #'dired-hide-details-mode) ;; Hide details by default in dired
 (add-hook 'prog-mode-hook #'rainbow-mode) ;; Show colors inline in prog-mode
 (setq org-hide-emphasis-markers t) ;; Hide emphasis markers in *sentence* and /sentence/ etc.
 
@@ -144,28 +143,24 @@
 (defun ahp/build-home ()
   (interactive)
   (ahp/run-command "bh"))
+
 (defun ahp/build-system ()
   (interactive)
   (ahp/run-command-exit-on-success "bs"))
 
-(map! :leader :n
-      :desc "Build nixos system from flake" "<f11>" #'ahp/build-system)
-(map! :leader :n
-      :desc "Build home with Nix Home-Manager" "<f12>" #'ahp/build-home)
+(map! :leader :desc "Build nixos system from flake" "<f11>" #'ahp/build-system
+      :leader :desc "Build home with Nix Home-Manager" "<f12>" #'ahp/build-home)
 
-;;;; Swap avy keybindings and override dirvish keybinding
+;;;; Swap avy keybindings
 (map! :after evil
       :map evil-normal-state-map
       :desc "avy-goto-char-2" "g s /" #'avy-goto-char-2
       :desc "avy-goto-char-timer" "g s s" #'avy-goto-char-timer
-      :leader :n :desc "+treemacs/toggle" "o p" #'+treemacs/toggle)
+      :leader :desc "+treemacs/toggle" "o p" #'+treemacs/toggle)
 
 ;; devdocs keybindings
-(map! :leader :n
-      :desc "devdocs-lookup" "d l" #'devdocs-lookup
-      :desc "devdocs-install" "d i" #'devdocs-install)
-
-(map! :desc "other window" "M-o" #'other-window)
+(map! :leader :desc "devdocs-lookup" "d l" #'devdocs-lookup
+      :leader :desc "devdocs-install" "d i" #'devdocs-install)
 
 ;;;; Custom popup rules
 (set-popup-rules!
@@ -199,7 +194,7 @@
      :size 0.4
      :quit t
      :select t)
-    ("^\\*Ollama.*\\*$"
+    (".*log.*"
      :side right
      :size 0.4
      :quit t
@@ -226,8 +221,8 @@
                       :models '(gemma3:4b))
       gptel-use-tools -1)
 
-(map! :leader :n :desc "abort gptel" "o q" #'gptel-abort)
-(map! :leader :n :desc "open gptel LLMs" "o l" #'my/gptel)
+(map! :leader :desc "abort gptel" "o q" #'gptel-abort
+      :leader :desc "open gptel LLMs" "o l" #'my/gptel)
 
 (defun my/gptel ()
   (interactive)
@@ -248,8 +243,7 @@
     (display-buffer (current-buffer) gptel-display-buffer-action)
     (message "Send your query with %s!"
              (substitute-command-keys "\\[gptel-send]"))
-    (current-buffer))
-  )
+    (current-buffer)))
 
 (defun gptel-lookup (prompt)
   (interactive (list (read-string "Ask the LLM: " nil gptel-lookup--history)))
@@ -272,21 +266,22 @@
 
 
 ;; Easy google translate access
-(setq google-translate-translation-directions-alist '(("en" . "da") ("da" . "en")))
-(setq google-translate-default-source-language "en")
-(setq google-translate-default-target-language "da")
-(map! :leader :n :desc "language translate" "l t" #'google-translate-smooth-translate)
-(map! :leader :n :desc "language translate at point" "l p" #'google-translate-at-point)
+(setq google-translate-translation-directions-alist '(("en" . "da") ("da" . "en"))
+      google-translate-default-source-language "en"
+      google-translate-default-target-language "da")
+(map! :leader :desc "language translate" "l t" #'google-translate-smooth-translate
+      :leader :desc "language translate at point" "l p" #'google-translate-at-point)
 
 (defun speed-type-top-200 ()
   (interactive)
   (speed-type-top-x 200))
 (add-hook 'speed-type-mode-hook #'olivetti-mode)
-(map! :leader :n :desc "speed-type" "o s" #'speed-type-top-200)
-(map! :map speed-type-mode-map :localleader "q" #'speed-type--quit)
-(map! :map speed-type-mode-map :localleader "r" #'speed-type--play-next)
-(setq speed-type-default-lang "English")
+(map! :map speed-type-mode-map
+      :leader :desc "speed-type" "o s" #'speed-type-top-200
+      :localleader "q" #'speed-type--quit
+      :localleader "r" #'speed-type--play-next)
 
+(setq speed-type-default-lang "English")
 (setq which-key-idle-delay 0.2)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -294,62 +289,79 @@
 (defun my/next-method ()
   (interactive)
   (evil-set-jump)
-  (beginning-of-defun (- 1)))
+  (beginning-of-defun (- 1))
+  (evil-scroll-line-to-center (line-number-at-pos)))
 
 (defun my/previous-method ()
   (interactive)
   (evil-set-jump)
-  (beginning-of-defun 1))
+  (beginning-of-defun 1)
+  (evil-scroll-line-to-center (line-number-at-pos)))
+
+;; Fuzzy find
+(map! :leader :desc "fuzzy find file" "f SPC" #'consult-find)
 
 ;; Intellj-like next/prev-function search
-(map! :ni :desc "goto next method" "M-j" #'my/next-method
-      :ni :desc "goto previous method" "M-k" #'my/previous-method)
+(map! :map prog-mode-map
+      :desc "goto next method" :nvi "M-j" #'my/next-method
+      :desc "goto previous method" :nvi "M-k" #'my/previous-method)
 
 (setq lsp-java-java-path "/home/andreas/.nix-profile/bin/java")
 
-(defvar java-function-regexp
-  (rx (or
-       " class "
-       (seq " enum " (+ alnum) " {")
-       (seq "record " (+ alnum) "(")
-       (seq " interface " (+ alnum) " {")
-       (seq space
-            (+ alnum)
-            "("
-            (* (or (seq (or "." "@") (+ alnum) "(") (not "(")))
-            ") {"))))
+(defconst java-function-regexp
+  (rx (or (seq " enum " (+ alnum) " {")
+          (seq "record " (+ alnum) "(")
+          (seq (or " interface " " class ") (+ (or alnum "," " ")) " {")
+          (seq space
+               (+ alnum)
+               "("
+               (* (or (seq (or "." "@") (+ alnum) "(") (not "(")))
+               ") {"))))
 
 (defun line-contains-string-p (str)
   "Return t if the current line contains STR."
-  (save-excursion
-    (let ((line-start (line-beginning-position)))
-      (search-backward str line-start t))))
+  (let ((current-line (buffer-substring-no-properties (line-beginning-position) (line-end-position))))
+    (string-match-p str current-line)))
 
 (defun my/next-java-method ()
   (interactive)
   (evil-set-jump)
   (if (line-contains-string-p "{") (search-forward "{") (forward-line))
   (search-forward-regexp java-function-regexp nil t)
-  (evil-last-non-blank)
   (if (line-contains-string-p ")")
       (progn
+        (evil-last-non-blank)
         (evil-find-char-backward 1 ?\))
         (evil-jump-item)
         (evil-backward-word-begin))
-    (evil-backward-word-begin)
-    ))
+    (evil-backward-word-begin))
+  (+my/goto-keyword-identifier)
+  (evil-scroll-line-to-center (line-number-at-pos)))
 
 (defun my/prev-java-method ()
   (interactive)
   (evil-set-jump)
   (search-backward-regexp java-function-regexp nil t)
   (evil-first-non-blank)
-  (evil-find-char 1 ?\()
-  (evil-backward-word-begin))
+  (unless (+my/goto-keyword-identifier)
+    (evil-find-char 1 ?\()
+    (evil-backward-word-begin))
+  (evil-scroll-line-to-center (line-number-at-pos)))
+
+(defun +my/goto-keyword-identifier ()
+  (let ((word (or (when (line-contains-string-p "class") "class")
+                  (when (line-contains-string-p "interface") "interface")
+                  (when (line-contains-string-p "enum") "enum")
+                  (when (line-contains-string-p "record") "record"))))
+    (when word
+      (evil-first-non-blank)
+      (search-forward word)
+      (evil-forward-word-begin))
+    word))
 
 (map! :map java-mode-map
-      :ni "M-k" #'my/prev-java-method
-      :ni "M-j" #'my/next-java-method)
+      :nvi "M-k" #'my/prev-java-method
+      :nvi "M-j" #'my/next-java-method)
 
 (defun my/project-todo-toggle ()
   (interactive)
@@ -371,7 +383,7 @@
   (cl-loop for buf in (+workspace-buffer-list)
            if (s-starts-with-p name (buffer-name buf)) return buf))
 
-(map! :map projectile-mode-map :leader :n "p t" #'my/project-todo-toggle)
+(map! :map projectile-mode-map :leader "p t" #'my/project-todo-toggle)
 
 (set-popup-rules!
   '((
