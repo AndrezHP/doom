@@ -10,7 +10,7 @@
 ;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for presentations or streaming.
 ;; - `doom-symbol-font' -- for symbols
 ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
-(setq doom-theme 'doom-tokyo-night
+(setq doom-theme 'doom-tomorrow-night
       doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15) ;; Nerd Font preferred
       doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)
       nerd-icons-font-names '("NFM.ttf"))
@@ -312,11 +312,10 @@
   (rx (or (seq " enum " (+ alnum) " {")
           (seq "record " (+ alnum) "(")
           (seq (or " interface " " class ") (+ (or alnum "," " ")) " {")
-          (seq space
-               (+ alnum)
-               "("
-               (* (or (seq (or "." "@") (+ alnum) "(") (not "(")))
-               ") {"))))
+          (seq (seq space (+ alnum) "(")
+               (* (or (seq (or "." "@") (+ alnum) "(")
+                      (not "(")))
+               (seq ")" (* (or space alnum)) "{")))))
 
 (defun line-contains-string-p (str)
   "Return t if the current line contains STR."
@@ -369,7 +368,7 @@
          (file-path (concat (projectile-project-root) file-name))
          confirm-kill-processes)
     (unless (file-exists-p file-path)
-      (write-region "#+title: Project\n\n* TODO's\n- [ ] \n* Questions/Thoughts" nil file-path))
+      (write-region "#+title: Project\n\n* TODO's\n- [ ]  \n* Questions/Thoughts" nil file-path))
     (if-let* ((workspace-buffer (get-workspace-buffer file-name))
               (win (when workspace-buffer (get-buffer-window workspace-buffer))))
         (delete-window win)
