@@ -334,7 +334,7 @@
         (evil-jump-item)
         (evil-backward-word-begin))
     (evil-backward-word-begin))
-  (+my/goto-keyword-identifier)
+  (+my/goto-java-keyword-identifier)
   (evil-scroll-line-to-center (line-number-at-pos)))
 
 (defun my/prev-java-method ()
@@ -342,12 +342,12 @@
   (evil-set-jump)
   (search-backward-regexp java-function-regexp nil t)
   (evil-first-non-blank)
-  (unless (+my/goto-keyword-identifier)
+  (unless (+my/goto-java-keyword-identifier)
     (evil-find-char 1 ?\()
     (evil-backward-word-begin))
   (evil-scroll-line-to-center (line-number-at-pos)))
 
-(defun +my/goto-keyword-identifier ()
+(defun +my/goto-java-keyword-identifier ()
   (let ((word (or (when (line-contains-string-p "class") "class")
                   (when (line-contains-string-p "interface") "interface")
                   (when (line-contains-string-p "enum") "enum")
@@ -355,8 +355,8 @@
     (when word
       (evil-first-non-blank)
       (search-forward word)
-      (evil-forward-word-begin))
-    word))
+      (evil-forward-word-begin)
+      word)))
 
 (map! :map java-mode-map
       :nvi "M-k" #'my/prev-java-method
