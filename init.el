@@ -126,7 +126,7 @@
        (sh +powershell)                ; she sells {ba,z,fi}sh shells on the C xor
        (web +tree-sitter)               ; the tubes (web stuff: html, css/scss, react...)
        yaml              ; JSON, but readable
-       ;; (zig +lsp +tree-sitter)               ; C, but simpler
+       (zig +lsp +tree-sitter)               ; C, but simpler
        ;;csharp            ; unity, .NET, and mono shenanigans
        ;;fsharp            ; ML stands for Microsoft's Language
        ;;elixir            ; erlang done right
