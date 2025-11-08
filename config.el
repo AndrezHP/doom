@@ -158,9 +158,13 @@
       :desc "avy-goto-char-timer" "g s s" #'avy-goto-char-timer
       :leader :desc "+treemacs/toggle" "o p" #'+treemacs/toggle)
 
-;; devdocs keybindings
+;;;; devdocs keybindings
 (map! :leader :desc "devdocs-lookup" "d l" #'devdocs-lookup
       :leader :desc "devdocs-install" "d i" #'devdocs-install)
+
+;;;; Next and previous
+(map! :desc "next git hunk" "] g" #'+vc-gutter/next-hunk
+      :desc "next git hunk" "[ g" #'+vc-gutter/previous-hunk)
 
 ;;;; Custom popup rules
 (set-popup-rules!
