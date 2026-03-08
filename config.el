@@ -15,6 +15,9 @@
       doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 15)
       nerd-icons-font-names '("NFM.ttf"))
 
+(auto-save-visited-mode 1)
+(setq auto-save-visited-interval 1)
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
@@ -163,8 +166,9 @@
       :leader :desc "devdocs-install" "d i" #'devdocs-install)
 
 ;;;; Next and previous
-(map! :desc "next git hunk" "] g" #'+vc-gutter/next-hunk
-      :desc "next git hunk" "[ g" #'+vc-gutter/previous-hunk)
+(map! :after evil
+      :desc "next git hunk" :leader :n "] g" #'+vc-gutter/next-hunk
+      :desc "next git hunk" :leader :n "[ g" #'+vc-gutter/previous-hunk)
 
 ;;;; Custom popup rules
 (set-popup-rules!
@@ -285,7 +289,6 @@
       :localleader "q" #'speed-type--quit
       :localleader "r" #'speed-type--play-next)
 
-(setq speed-type-default-lang "English")
 (setq which-key-idle-delay 0.2)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
